@@ -122,8 +122,10 @@
 
             const dataResponseLogin = await responseLogin.json();
 
-            window.location.href = dataResponseLogin.redirectTo;
-
+            if(dataResponseLogin.redirectTo){
+                window.location.href = dataResponseLogin.redirectTo;
+            }
+        
         })
 
         btnRegister?.addEventListener('click',async()=>{
