@@ -41,11 +41,6 @@ class Server {
             secret:process.env.CLAVE_SESSION,
             resave:false,
             saveUninitialized:false,
-            // store:MongoStore.create({
-            //     mongoUrl:process.env.MONGOURI,
-            //     collectionName:'session',
-            //     ttl:60*60*24
-            // }),
             cookie:{
                 maxAge:1000*60*60*24,
                 httpOnly:true,

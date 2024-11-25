@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const login = (req,res) => {
     const {email,password} = req.body;
     req.session.user = email;
@@ -9,7 +9,7 @@ const login = (req,res) => {
 const register = async(req,res) => {
     let {email,password} = req.body;
     const users = require('../db/db');
-    password = await bcrypt.hash(password,10);
+    password = bcrypt.hashSync(password,10);
     users.push({email,password});
     return res.json({msg:'Registrado'})
 }

@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const registroBodyAtributos = (req, res, next) => {
     
     const camposObligatorios = ['email','password','repassword'];
@@ -98,7 +98,7 @@ const passwordAutenticada = async(req,res,next) => {
     }
 
     try {
-        const passwordValid = await bcrypt.compare(req.body.password, usuario.password);
+        const passwordValid = bcrypt.compareSync(req.body.password, usuario.password);
 
         if(!passwordValid){
             return res.status(404).json({error:'Contraseña erronea'});
