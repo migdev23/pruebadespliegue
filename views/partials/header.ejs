@@ -1,0 +1,153 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <% if (!logged) { %>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#login">Autenticate</a>
+                    </div>
+                </div>
+            <%}else{%>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+                        <a class="nav-link" aria-current="page" href="/private">Privada</a>
+                        <a class="nav-link" aria-current="page" href="/profile">Perfil</a>
+                        <a class="nav-link" href="/auth/logout">Logout</a>
+                    </div>
+                </div>
+           <% } %>
+            
+        </div>
+    </nav>
+
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="passwordLogin">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnLogin" class="btn btn-primary" data-bs-dismiss="modal">
+                        Inciar Sesion
+                    </button>
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#register" >Registrarme</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registro Modal -->
+    <div class="modal fade" id="register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Registro</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    
+                    <form >
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="passwordRegister">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Repeat Password</label>
+                            <input type="password" class="form-control" id="repasswordRegister">
+                          </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#login" data-bs-dismiss="modal">
+                        Atras
+                    </button>
+                    <button type="button" id="btnRegister" class="btn btn-primary">Registrarme</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let inputEmailLogin = document.querySelector('#emailLogin');
+        let inputEmailRegister = document.querySelector('#emailRegister');
+        let inputPasswordRegister = document.querySelector('#passwordRegister');
+        let inputRePasswordRegister = document.querySelector('#repasswordRegister');
+        let inputPasswordLogin = document.querySelector('#passwordLogin');
+        let btnRegister = document.querySelector('#btnRegister');
+        let btnLogin = document.querySelector('#btnLogin');
+
+        btnLogin?.addEventListener('click',async()=>{
+            dataLogin = {
+                email:inputEmailLogin.value,
+                password:inputPasswordLogin.value
+            }
+            
+            const responseLogin = await fetch('http://localhost:3000/auth/login',{
+                method:'post',
+                headers:{
+                    "Content-Type": "application/json",
+                },
+                body:JSON.stringify(dataLogin)
+            })
+
+            const dataResponseLogin = await responseLogin.json();
+
+            window.location.href = dataResponseLogin.redirectTo;
+
+        })
+
+        btnRegister?.addEventListener('click',async()=>{
+            dataRegister = {
+                email:inputEmailRegister.value,
+                password:inputPasswordRegister.value,
+                repassword:inputRePasswordRegister.value
+            }
+
+            const responseRegister = await fetch('http://localhost:3000/auth/register',{
+                method:'post',
+                headers:{
+                    "Content-Type": "application/json",
+                },
+                body:JSON.stringify(dataRegister)
+            })
+
+            const dataResponseRegister = await responseRegister.json();
+            if(dataResponseRegister.error){
+                alert(dataResponseRegister.error)
+            }else{
+                alert(dataResponseRegister.msg)
+            }
+        
+        })
+    </script>
+</header>
