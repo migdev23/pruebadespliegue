@@ -112,7 +112,7 @@
                 password:inputPasswordLogin.value
             }
             
-            const responseLogin = await fetch('http://localhost:3000/auth/login',{
+            const responseLogin = await fetch('/auth/login',{
                 method:'post',
                 headers:{
                     "Content-Type": "application/json",
@@ -133,7 +133,7 @@
                 repassword:inputRePasswordRegister.value
             }
 
-            const responseRegister = await fetch('http://localhost:3000/auth/register',{
+            const responseRegister = await fetch('/auth/register',{
                 method:'post',
                 headers:{
                     "Content-Type": "application/json",
